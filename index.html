@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>설날의 선물, 산막 와이너리 비원</title>
+    <!-- Tailwind CSS for layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #4A0E0E;   /* 짙은 버건디 */
+            --secondary: #D4AF37; /* 앤티크 골드 */
+            --background: #F9F7F2;/* 웜 화이트 */
+            --accent: #7B9076;    /* 빈야드 그린 */
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--primary);
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* 메인 인트로 화면 */
+        #tab-main {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        #tab-main.slide-up {
+            transform: translateY(-100%);
+        }
+
+        .header-title { color: var(--secondary); }
+
+        /* 네비게이션 */
+        .main-nav {
+            position: sticky;
+            top: 0;
+            background-color: var(--background);
+            z-index: 100;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .tab-btn {
+            background-color: #f3f4f6;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        /* 구역 디자인 */
+        .section-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 2rem;
+        }
+
+        /* 맛 기록용 별점/슬라이더 스타일 */
+        .range-slider {
+            accent-color: var(--secondary);
+        }
+
+        .hidden { display: none; }
+
+        /* 시식평 리스트 스타일 */
+        .comment-item {
+            border-left: 4px solid var(--secondary);
+            background: #fff;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        /* 테이스팅 노트 인디케이터 커스텀 */
+        .note-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+        }
+        .note-dot.active {
+            background-color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 메인 화면 섹션 (인트로) -->
+    <div id="tab-main" onclick="enterSite()">
+        <h1 class="header-title text-4xl md:text-6xl font-bold mb-10 text-center px-4">"설날의 선물,<br>산막 와이너리 비원"</h1>
+        <div class="flex justify-center mb-6">
+            <img src="https://www.notion.so/7-3063af50336880339b42fc74f039acef?source=copy_link#30c3af50336880e2a71dfcc41d2e7576" alt="비원 와인 메인" class="rounded-lg shadow-2xl border-4 border-[#D4AF37] w-64 h-96 object-cover">
+        </div>
+        <p class="text-[#D4AF37] animate-pulse font-light text-lg">화면을 클릭하여 정원으로 입장하세요</p>
+    </div>
+
+    <!-- 사이트 전체 컨테이너 -->
+    <div id="site-content">
+        <nav class="main-nav">
+            <div class="flex justify-center gap-3 md:gap-6 px-4">
+                <button class="tab-btn active px-4 md:px-8 py-2 rounded-full font-bold" onclick="switchTab('winery')">산막 와이너리</button>
+                <button class="tab-btn px-4 md:px-8 py-2 rounded-full font-bold" onclick="switchTab('wine')">비원 소개</button>
+                <button class="tab-btn px-4 md:px-8 py-2 rounded-full font-bold" onclick="switchTab('record')">나의 기록</button>
+            </div>
+        </nav>
+
+        <main class="max-w-6xl mx-auto p-4 md:p-8">
+            
+            <!-- [탭 1] 산막 와이너리 -->
+            <div id="section-winery" class="content-section grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="section-card border-t-8 border-[#7B9076]">
+                    <h3 class="font-bold text-xl mb-4 text-[#4A0E0E]">공간의 철학</h3>
+                    <p class="text-gray-600 leading-relaxed italic">"자연의 시간을 기다리는 곳"</p>
+                    <p class="mt-4 text-sm text-gray-500">산막 와이너리는 인위적인 가공을 최소화하고 영동의 테루아를 정직하게 담아내는 철학을 가지고 있습니다.</p>
+                </div>
+                <div class="section-card border-t-8 border-[#7B9076]">
+                    <h3 class="font-bold text-xl mb-4 text-[#4A0E0E]">대표 품종</h3>
+                    <p class="text-gray-600 leading-relaxed">한국의 기후에 최적화된 포도 재배 방식을 연구하며, 비원(秘園)의 베이스가 되는 최상급 포도를 생산합니다.</p>
+                </div>
+                <div class="section-card border-t-8 border-[#7B9076]">
+                    <h3 class="font-bold text-xl mb-4 text-[#4A0E0E]">위치</h3>
+                    <p class="text-gray-600 leading-relaxed">충청북도 영동군 영동읍... <br>포도 향이 가득한 산자락 아래 위치하고 있습니다.</p>
+                </div>
+            </div>
+
+            <!-- [탭 2] 비원 소개 (요청에 따라 개편됨) -->
+            <div id="section-wine" class="content-section hidden space-y-8">
+                <!-- 상단: 와인 스토리 & 이미지 섹션 -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 와인 스토리 칸 -->
+                    <div class="section-card flex flex-col justify-center border-l-8 border-[#4A0E0E]">
+                        <h2 class="text-3xl font-bold mb-6 italic text-[#4A0E0E]">Biwon Story</h2>
+                        <p class="text-gray-700 leading-relaxed text-lg mb-4">
+                            '비원(秘園)'은 산막 와이너리의 가장 깊은 곳, 비밀스러운 정원에서 영감을 받아 탄생했습니다. 
+                        </p>
+                        <p class="text-gray-600 leading-relaxed">
+                            영동의 바람과 햇살이 빚어낸 포도는 오크통 속에서 긴 잠을 자며 우아한 향을 머금게 됩니다. 한 잔의 비원에는 산막의 사계절과 정성이 고스란히 담겨 있습니다. 당신만을 위한 비밀의 정원으로 초대합니다.
+                        </p>
+                        <div class="mt-8">
+                            <span class="text-[#D4AF37] font-serif italic text-xl">Sanmak Winery Signature Red</span>
+                        </div>
+                    </div>
+
+                    <!-- 이미지 넣을 칸 -->
+                    <div class="bg-[#222] rounded-2xl overflow-hidden shadow-xl min-h-[400px] relative flex items-center justify-center">
+                        <img src="https://www.notion.so/7-3063af50336880339b42fc74f039acef?source=copy_link#30c3af5033688087be8ed8f91e9b374c" alt="비원 와인병 상세 이미지" class="w-full h-full object-cover opacity-80">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <p class="text-xs tracking-widest uppercase mb-1">Estate Bottled</p>
+                            <h3 class="text-2xl font-bold">BIWON RED WINE</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 하단: 테이스팅 노트 & 수상 내역 섹션 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 테이스팅 노트 넣을 칸 -->
+                    <div class="section-card border-t-8 border-[#D4AF37]">
+                        <h3 class="font-bold text-xl mb-6 flex items-center gap-2">
+                             Tasting Note
+                        </h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-bold">당도 (Sweetness)</span>
+                                    <span class="text-xs text-gray-400">Dry</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="note-dot active"></div><div class="note-dot"></div><div class="note-dot"></div><div class="note-dot"></div><div class="note-dot"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-bold">산도 (Acidity)</span>
+                                    <span class="text-xs text-gray-400">Medium High</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="note-dot active"></div><div class="note-dot active"></div><div class="note-dot active"></div><div class="note-dot"></div><div class="note-dot"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-bold">바디 (Body)</span>
+                                    <span class="text-xs text-gray-400">Full Body</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="note-dot active"></div><div class="note-dot active"></div><div class="note-dot active"></div><div class="note-dot active"></div><div class="note-dot"></div>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t">
+                                <p class="text-sm text-gray-500 italic">"잘 익은 블랙베리, 다크 초콜릿, 그리고 은은한 바닐라 향의 조화"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 수상 내역 넣을 칸 -->
+                    <div class="section-card border-t-8 border-[#7B9076] bg-[#fbfbfb]">
+                        <h3 class="font-bold text-xl mb-6">Awards & Honors</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-[#D4AF37] text-2xl">🏆</div>
+                                <div>
+                                    <p class="font-bold text-[#4A0E0E]">2023 대한민국 주류대상</p>
+                                    <p class="text-sm text-gray-500">한국와인 레드 부문 대상 수상</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="text-[#D4AF37] text-2xl">🥇</div>
+                                <div>
+                                    <p class="font-bold text-[#4A0E0E]">International Wine Challenge</p>
+                                    <p class="text-sm text-gray-500">Bronze Medal (Korea Region High Score)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="text-[#D4AF37] text-2xl">⭐</div>
+                                <div>
+                                    <p class="font-bold text-[#4A0E0E]">광명동굴 대한민국 와인 페스티벌</p>
+                                    <p class="text-sm text-gray-500">올해의 레이블 디자인상 선정</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8 p-4 border border-dashed border-[#D4AF37] rounded-lg bg-white">
+                            <p class="text-xs text-center text-gray-400">산막 와이너리의 기술력과 진정성을 인정받은 순간들입니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [탭 3] 나의 기록 -->
+            <div id="section-record" class="content-section hidden space-y-10">
+                <!-- 3-1. 테이스팅 노트 작성칸 -->
+                <div class="section-card border-t-8 border-[#D4AF37] max-w-3xl mx-auto">
+                    <h3 class="font-bold text-2xl mb-8 text-center text-[#4A0E0E]">나의 테이스팅 노트</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block font-bold mb-2">맛(당도/산도)</label>
+                                <input type="range" min="1" max="5" class="range-slider w-full">
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>Dry</span><span>Sweet</span></div>
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-2">바디감</label>
+                                <input type="range" min="1" max="5" class="range-slider w-full">
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>Light</span><span>Full Body</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-2">함께한 음식 (마리아주)</label>
+                            <textarea placeholder="예: 소고기 등심 구이, 브리 치즈..." class="w-full h-24 p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-[#D4AF37]" id="food-input"></textarea>
+                        </div>
+                    </div>
+                    <button class="w-full bg-[#4A0E0E] text-white py-3 rounded-lg font-bold hover:bg-[#631414] transition-colors" onclick="saveMyNote()">기록 저장하기</button>
+                </div>
+
+                <!-- 3-2. 다른 사람들의 시식평 -->
+                <div class="max-w-3xl mx-auto">
+                    <h3 class="font-bold text-xl mb-6 flex items-center gap-2">
+                        <span class="bg-[#D4AF37] w-1 h-6"></span> 
+                        다른 분들의 시식평
+                    </h3>
+                    
+                    <div id="comment-list" class="space-y-4 mb-8">
+                        <div class="comment-item shadow-sm">
+                            <p class="font-bold text-sm text-[#4A0E0E] mb-1">비원 매니아 <span class="text-xs font-normal text-gray-400 ml-2">2024.02.19</span></p>
+                            <p class="text-gray-600 text-sm">목 넘김이 정말 부드러워요. 육류랑 정말 잘 어울립니다!</p>
+                        </div>
+                        <div class="comment-item shadow-sm">
+                            <p class="font-bold text-sm text-[#4A0E0E] mb-1">산막산책자 <span class="text-xs font-normal text-gray-400 ml-2">2024.02.18</span></p>
+                            <p class="text-gray-600 text-sm">와이너리 분위기가 너무 좋아서 맛이 두 배로 느껴졌어요.</p>
+                        </div>
+                    </div>
+
+                    <!-- 시식평 입력칸 -->
+                    <div class="bg-white p-4 rounded-xl shadow-sm border">
+                        <input type="text" id="comment-user" placeholder="닉네임" class="block w-full mb-2 p-2 text-sm border-b focus:outline-none">
+                        <textarea id="comment-text" placeholder="와인에 대한 솔직한 평을 남겨주세요." class="w-full h-20 p-2 text-sm focus:outline-none resize-none"></textarea>
+                        <div class="text-right">
+                            <button class="bg-[#7B9076] text-white px-6 py-2 rounded-lg text-sm font-bold" onclick="addComment()">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // 인트로 입장
+        function enterSite() {
+            const intro = document.getElementById('tab-main');
+            intro.classList.add('slide-up');
+            setTimeout(() => { intro.style.display = 'none'; }, 800);
+        }
+
+        // 탭 전환
+        function switchTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            const targetSection = document.getElementById('section-' + tabName);
+            if (targetSection) targetSection.classList.remove('hidden');
+            
+            // 현재 클릭된 버튼 활성화 스타일을 위해 로직 수정
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                if(btn.innerText.includes(
+                    tabName === 'winery' ? '산막 와이너리' : 
+                    tabName === 'wine' ? '비원 소개' : '나의 기록'
+                )) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 테이스팅 노트 저장 (임시 로직)
+        function saveMyNote() {
+            const food = document.getElementById('food-input').value;
+            if(!food) {
+                alert("기록할 내용을 입력해주세요!");
+                return;
+            }
+            alert("나의 테이스팅 노트가 브라우저에 저장되었습니다.");
+        }
+
+        // 시식평 등록 로직
+        function addComment() {
+            const user = document.getElementById('comment-user').value || "익명";
+            const text = document.getElementById('comment-text').value;
+            
+            if(!text) return;
+
+            const list = document.getElementById('comment-list');
+            const newItem = document.createElement('div');
+            newItem.className = "comment-item shadow-sm animate-fade-in";
+            newItem.innerHTML = `
+                <p class="font-bold text-sm text-[#4A0E0E] mb-1">${user} <span class="text-xs font-normal text-gray-400 ml-2">방금 전</span></p>
+                <p class="text-gray-600 text-sm">${text}</p>
+            `;
+            
+            list.prepend(newItem);
+            document.getElementById('comment-text').value = "";
+            document.getElementById('comment-user').value = "";
+        }
+    </script>
+</body>
+</html>
